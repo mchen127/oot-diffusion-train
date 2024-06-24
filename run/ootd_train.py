@@ -167,16 +167,16 @@ from diffusers import UniPCMultistepScheduler,PNDMScheduler
 from accelerate import Accelerator
 from accelerate.utils import ProjectConfiguration, set_seed
 import torch.nn.functional as F
-sys.path.append(r'/content/OOTDiffusion-train/ootd')
+sys.path.append(r'/content/oot-diffusion-train/ootd')
 
 from pipelines_ootd.unet_vton_2d_condition import UNetVton2DConditionModel
 from pipelines_ootd.unet_garm_2d_condition import UNetGarm2DConditionModel
 
-VIT_PATH = "/content/OOTDiffusion-train/checkpoints/clip-vit-large-patch14"
-VAE_PATH = "/content/OOTDiffusion-train/checkpoints/ootd/vae"
-UNET_PATH = "/content/OOTDiffusion-train/checkpoints/ootd/ootd_hd/checkpoint-36000/"
-MODEL_PATH = "/content/OOTDiffusion-train/checkpoints/ootd"
-scheduler_path = '/content/OOTDiffusion-train/checkpoints/ootd/scheduler/scheduler_ootd_config.json' 
+VIT_PATH = "/content/oot-diffusion-train/checkpoints/clip-vit-large-patch14"
+VAE_PATH = "/content/oot-diffusion-train/checkpoints/ootd"
+UNET_PATH = "/content/oot-diffusion-train/checkpoints/ootd/ootd_hd/checkpoint-36000"
+MODEL_PATH = "/content/oot-diffusion-train/checkpoints/ootd"
+scheduler_path = '/content/oot-diffusion-train/checkpoints/ootd/scheduler/scheduler_config.json' 
 
 vae = AutoencoderKL.from_pretrained(
             VAE_PATH,
@@ -186,14 +186,14 @@ vae = AutoencoderKL.from_pretrained(
 
 unet_garm = UNetGarm2DConditionModel.from_pretrained(
             UNET_PATH,
-            subfolder="unet_garm_train",
+            subfolder="unet_garm",
             torch_dtype=torch.float32,
             use_safetensors=True,
         )
 
 unet_vton = UNetVton2DConditionModel.from_pretrained(
             UNET_PATH,
-            subfolder="unet_vton_train",
+            subfolder="unet_vton",
             torch_dtype=torch.float32,
             use_safetensors=True,
         )
@@ -539,7 +539,8 @@ for epoch in tqdm(range(first_epoch, args.num_train_epochs)):
 
 
             # with accelerator.autocast():
-            util_adv_loss = torch.nn.functional.softplus(-sample).mean() * 0 
+            # print(sample)
+            util_adv_loss = torch.nn.functional.softplus(-sample[0]).mean() * 0
             loss = F.mse_loss(noise_pred.float(), noise.float(), reduction="mean")+util_adv_loss
             
             print(loss.item())
