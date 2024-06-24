@@ -22,7 +22,7 @@ def get_opt():
     parser.add_argument('--load_width', type=int, default=768)
     parser.add_argument('--shuffle', action='store_true')
 
-    parser.add_argument('--dataset_dir', type=str, default='/mmu-vcg-ssd/yichen/VTONDataset/VITON-HD/zalando-hd-resized/')
+    parser.add_argument('--dataset_dir', type=str, default='/content/drive/Shareddrives/112-2 資管專題/zalando-hd-resized')
     parser.add_argument('--dataset_mode', type=str, default='test')
     parser.add_argument('--dataset_list', type=str, default='test_pairs.txt')
     parser.add_argument('--checkpoint_dir', type=str, default='./checkpoints/')
@@ -167,16 +167,16 @@ from diffusers import UniPCMultistepScheduler,PNDMScheduler
 from accelerate import Accelerator
 from accelerate.utils import ProjectConfiguration, set_seed
 import torch.nn.functional as F
-sys.path.append(r'/mmu-vcg-ssd/yichen/OOTDiffusion/ootd')
+sys.path.append(r'/content/OOTDiffusion-train/ootd')
 
 from pipelines_ootd.unet_vton_2d_condition import UNetVton2DConditionModel
 from pipelines_ootd.unet_garm_2d_condition import UNetGarm2DConditionModel
 
-VIT_PATH = "/mmu-vcg-ssd/yichen/OOTDiffusion/checkpoints/clip-vit-large-patch14"
-VAE_PATH = "/mmu-vcg-ssd/yichen/OOTDiffusion/checkpoints/ootd"
-UNET_PATH = "/mmu-vcg-ssd/yichen/OOTDiffusion/checkpoints/ootd/ootd_hd/checkpoint-36000/"
-MODEL_PATH = "/mmu-vcg-ssd/yichen/OOTDiffusion/checkpoints/ootd"
-scheduler_path = '/mmu-vcg-ssd/yichen/OOTDiffusion/checkpoints/ootd/scheduler/scheduler_ootd_config.json'
+VIT_PATH = "/content/OOTDiffusion-train/checkpoints/clip-vit-large-patch14"
+VAE_PATH = "/content/OOTDiffusion-train/checkpoints/ootd/vae"
+UNET_PATH = "/content/OOTDiffusion-train/checkpoints/ootd/ootd_hd/checkpoint-36000/"
+MODEL_PATH = "/content/OOTDiffusion-train/checkpoints/ootd"
+scheduler_path = '/content/OOTDiffusion-train/checkpoints/ootd/scheduler/scheduler_ootd_config.json' 
 
 vae = AutoencoderKL.from_pretrained(
             VAE_PATH,
